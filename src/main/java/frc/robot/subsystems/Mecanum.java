@@ -35,20 +35,30 @@ public class Mecanum extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void move() {
-    
+  public double getLimit() {
     double voltage = PDP.getVoltage();
     double current = PDP.getTotalCurrent();
     double limit = (0.09 * voltage);
     SmartDashboard.putNumber("VOLTAGE", voltage);
     SmartDashboard.putNumber("CURRENT", current);
     SmartDashboard.putNumber("IR", voltage/current);
+    return limit;
+
+  }
+
+  public void translate(double x) {
+    //upperLeft.set(limit * x);
+  }
+  public void move() {
+    
     double forward = joystick.getZ() * -1 * 0.25; // don't go too fast! multiply by 0.2. forward = speed
-    double x = joystick.getX() * limit;
-    double turn = joystick.getY() * limit;
+    double x = joystick.getX() * getLimit();
+    double turn = joystick.getY() * getLimit();
 
     mecanum.driveCartesian(forward, 0, turn);
-    //upperLeft.set(limit * x);
+    translate(x);
+
+    
 
 
   }
