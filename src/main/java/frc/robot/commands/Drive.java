@@ -16,11 +16,11 @@ public class Drive extends CommandBase {
 
   //CvSink cvSink = CameraServer.getVideo();
 
-  UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-  MjpegServer mjpegServer1 = new MjpegServer("serve_USB Camera 0", 1181);
+  //UsbCamera usbCamera = new UsbCamera("USB Camera 0", 4);
+  //MjpegServer mjpegServer1 = new MjpegServer("serve_USB Camera 0", 1181);
 
   // Creates the CvSink and connects it to the UsbCamera
-  CvSink cvSink = new CvSink("opencv_USB Camera 0");
+  //CvSink cvSink = new CvSink("opencv_USB Camera 0");
 
   public Drive(Mecanum mecanum) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,9 +33,9 @@ public class Drive extends CommandBase {
   public void initialize() {
     CameraServer.startAutomaticCapture();
     // Creates UsbCamera and MjpegServer [1] and connects them
-    CameraServer.startAutomaticCapture();
-    mjpegServer1.setSource(usbCamera);
-    cvSink.setSource(usbCamera);
+    //CameraServer.startAutomaticCapture();
+    //mjpegServer1.setSource(usbCamera);
+    //cvSink.setSource(usbCamera);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

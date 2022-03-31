@@ -8,7 +8,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,6 +26,7 @@ public class Mecanum extends SubsystemBase {
 
   MecanumDrive mecanum = new MecanumDrive(upperLeft, lowerLeft, upperRight, lowerRight);
 
+  PowerDistribution PDP = new PowerDistribution(0, ModuleType.kCTRE);
   public Mecanum() {
   }
 
@@ -32,11 +36,21 @@ public class Mecanum extends SubsystemBase {
   }
 
   public void move() {
-    double forward = joystick.getY() * 0.5; // don't go too fast! multiply by 0.2. forward = speed
-    double x = joystick.getX() * 0.5;
-    double turn = joystick.getZ() * 0.5;
+    
+    double voltage = PDP.getVoltage();
+    double current = PDP.getTotalCurrent();
+    double limit = (0.09 * voltage);
+    SmartDashboard.putNumber("VOLTAGE", voltage);
+    SmartDashboard.putNumber("CURRENT", current);
+    SmartDashboard.putNumber("IR", voltage/current);
+    double forward = joystick.getZ() * -1 * 0.25; // don't go too fast! multiply by 0.2. forward = speed
+    double x = joystick.getX() * limit;
+    double turn = joystick.getY() * limit;
 
-    mecanum.driveCartesian(forward, x, turn);
+    mecanum.driveCartesian(forward, 0, turn);
+    //upperLeft.set(limit * x);
+
+
   }
 
   public void stop() {
